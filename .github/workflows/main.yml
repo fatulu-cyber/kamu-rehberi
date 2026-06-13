@@ -1,0 +1,39 @@
+name: Otomatik Kamu Rehberi Guncelleme
+on:
+  schedule:
+    - cron: '0 4 * * *' # Her gun sabaha karsi 04:00'da calisir
+  workflow_dispatch: # Manuel baslatma butonunu aktif eder
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Kodlari Cek
+        uses: actions/checkout@v4
+
+      - name: Python Kur
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Kutuphaneleri Yukle
+        run: |
+          if [ -f gereksinimler.txt ]; then pip install -r gereksinimler.txt; fi
+
+      - name: Kaziyiciyi Calistir
+        run: |
+          if [ -f kaziyici.py ]; then python kaziyici.py; fi
+          if [ -f kaziyici.js ]; then node kaziyici.js; fi
+
+      - name: Sayfayi Yukle
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: '.'
+
+      - name: Sitemizi Yayina Al
+        uses: actions/deploy-pages@v4
