@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kamu Hukuk Rehberi & İlan Veri Paneli</title>
+    <script src="https://tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col justify-center items-center p-6">
+    <div id="auth-box" class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+        <h2 id="auth-title" class="text-2xl font-bold mb-6 text-center text-gray-800">Veri Paneli Giriş</h2>
+        <form id="auth-form" onsubmit="handleAuth(event)">
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2">E-posta Adresi</label>
+                <input type="email" id="email" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div class="mb-6">
+                <label class="block text-gray-700 text-sm font-bold mb-2">Şifre</label>
+                <input type="password" id="password" required class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <button type="submit" id="submit-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full focus:outline-none focus:shadow-outline">Giriş Yap</button>
+        </form>
+        <p class="text-sm text-center text-gray-600 mt-4">
+            <span id="toggle-text">Hesabınız yok mu?</span> 
+            <button onclick="toggleAuth()" class="text-blue-600 font-bold hover:underline" id="toggle-btn">Kayıt Ol (Sign Up)</button>
+        </p>
+    </div>
+
+    <div id="main-panel" class="hidden w-full max-w-5xl bg-white p-8 rounded-lg shadow-md mt-6">
+        <div class="flex justify-between items-center mb-6 border-b pb-4">
+            <h1 class="text-3xl font-bold text-gray-800">Kamu Veri Yönetim Paneli</h1>
+            <button onclick="logout()" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">Çıkış Yap</button>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <div class="bg-blue-50 p-6 rounded-lg border border-blue-200">
+                <h3 class="font-bold text-blue-800 mb-2">Resmi Gazete Tarayıcı</h3>
+                <p class="text-sm text-gray-600">Her gün saat 04:00'te otomatik kontrol edilir.</p>
+                <span class="inline-block bg-green-200 text-green-800 text-xs px-2 py-1 rounded mt-3 font-semibold">Aktif (Cron)</span>
+            </div>
+            <div class="bg-green-50 p-6 rounded-lg border border-green-200">
+                <h3 class="font-bold text-green-800 mb-2">İŞKUR İlan Toplayıcı</h3>
+                <p class="text-sm text-gray-600">Yeni kamu personeli alımları listelenir.</p>
+                <span class="inline-block bg-green-200 text-green-800 text-xs px-2 py-1 rounded mt-3 font-semibold">Aktif (Cron)</span>
+            </div>
+            <div class="bg-purple-50 p-6 rounded-lg border border-purple-200">
+                <h3 class="font-bold text-purple-800 mb-2">Google AdSense Durumu</h3>
+                <p class="text-sm text-gray-600">Reklam kimliği ve yerleşimler korunuyor.</p>
+                <span class="inline-block bg-blue-200 text-blue-800 text-xs px-2 py-1 rounded mt-3 font-semibold">Güvenli Bağlantı</span>
+            </div>
+        </div>
+        <div class="bg-gray-50 p-6 rounded-lg border">
+            <h2 class="text-xl font-bold mb-4 text-gray-700">Toplanan Son Veriler</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b text-gray-600">
+                            <th class="pb-3 font-semibold">Tarih</th>
+                            <th class="pb-3 font-semibold">Kaynak</th>
+                            <th class="pb-3 font-semibold">Başlık / İçerik Durumu</th>
+                            <th class="pb-3 font-semibold">İşlem</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-gray-700 text-sm">
+                        <tr class="border-b">
+                            <td class="py-3">Bugün</td>
+                            <td>Resmi Gazete</td>
+                            <td>Mevzuat ve kamu kararları tarandı, HTML hazırlandı.</td>
+                            <td><span class="text-green-600 font-semibold">Tamamlandı</span></td>
+                        </tr>
+                        <tr>
+                            <td class="py-3">Bugün</td>
+                            <td>İŞKUR / Kariyer Kapısı</td>
+                            <td>Yeni kamu personeli alım ilanları veri merkezine aktarıldı.</td>
+                            <td><span class="text-green-600 font-semibold">Tamamlandı</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isSignUp = false;
+        function toggleAuth() {
+            isSignUp = !isSignUp;
+            document.getElementById('auth-title').innerText = isSignUp ? 'Yeni Hesap Oluştur' : 'Veri Paneli Giriş';
+            document.getElementById('submit-btn').innerText = isSignUp ? 'Kayıt Ol (Sign Up)' : 'Giriş Yap';
+            document.getElementById('toggle-text').innerText = isSignUp ? 'Zaten hesabınız var mı?' : 'Hesabınız yok mu?';
+            document.getElementById('toggle-btn').innerText = isSignUp ? 'Giriş Yap' : 'Kayıt Ol (Sign Up)';
+        }
+        function handleAuth(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const pass = document.getElementById('password').value;
+            if(isSignUp) {
+                localStorage.setItem('admin_user', JSON.stringify({email, pass}));
+                alert('Yönetici (Admin) hesabınız başarıyla oluşturuldu! Şimdi giriş yapabilirsiniz.');
+                toggleAuth();
+            } else {
+                const storedUser = JSON.parse(localStorage.getItem('admin_user'));
+                if(storedUser && storedUser.email === email && storedUser.pass === pass) {
+                    document.getElementById('auth-box').classList.add('hidden');
+                    document.getElementById('main-panel').classList.remove('hidden');
+                } else {
+                    alert('Hatalı e-posta veya şifre! Eğer ilk kez giriyorsanız lütfen önce "Kayıt Ol" seçeneğini kullanın.');
+                }
+            }
+        }
+        function logout() {
+            document.getElementById('main-panel').classList.add('hidden');
+            document.getElementById('auth-box').classList.remove('hidden');
+            document.getElementById('email').value = '';
+            document.getElementById('password').value = '';
+        }
+    </script>
+</body>
+</html>
