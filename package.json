@@ -1,0 +1,17 @@
+{
+  "name": "sunucu-scraper-system",
+  "version": "1.0.0",
+  "description": "Resmi Gazete ve İŞKUR ilanlarını kazıyan günlük scraper - Kendi sunucunuz için",
+  "main": "scraper.js",
+  "scripts": {
+    "scrape": "node scraper.js",
+    "post": "node wp-post.js",
+    "cron": "node cron-runner.js",
+    "full": "node scraper.js && node wp-post.js"
+  },
+  "dependencies": {
+    "axios": "^1.6.0",
+    "cheerio": "^1.0.0-rc.12",
+    "node-cron": "^3.0.3"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "wordpress": {
+    "url": "https://www.istanbulburda.com",
+    "username": "admin",
+    "app_password": "XXXX XXXX XXXX XXXX XXXX XXXX",
+    "category_id": 1
+  },
+  "output_dir": "./output",
+  "schedule": {
+    "hour": 4,
+    "minute": 0,
+    "timezone": "Europe/Istanbul"
+  },
+  "sources": {
+    "resmi_gazete": true,
+    "iskur": true,
+    "osym": true,
+    "mhrs": true
+  }
+}
